@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group>
+        <item
+            android:id="@+id/url_or_txt"
+            android:title="@string/url_or_txt" />
+        <item
+            android:id="@+id/disable_img"
+            android:checkable="true"
+            android:title="@string/disable_img" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/review"
+            android:title="@string/review" />
+        <item
+            android:id="@+id/recommend"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/recommend" />
+    </group>
+</menu>
