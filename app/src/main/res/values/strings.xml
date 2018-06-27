@@ -10,7 +10,7 @@
     <string name="exit_msg">再按一次退出程序</string>
     <string name="disable_img">禁止加载图片</string>
     <string name="recommend">向好友推荐</string>
-    <string name="recommend_msg">简单易用的网页朗读器，闭眼也能学习啦\nhttp://abcdefasf</string>
+    <string name="recommend_msg">闭眼也能学习啦!\n推荐侃哥的网页朗读神器。下载地址：http://a.app.qq.com/o/simple.jsp?pkgname=com.github.wukan1986.kwebspeaker</string>
     <string name="review">去评分</string>
     <string name="tts_settings">设置默认TTS引擎\n如跳转失败，请到 [设置/语言和输入/文字转语音输出] 手工设置</string>
     <string name="goto_settings">去设置</string>
