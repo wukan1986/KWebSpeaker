@@ -10,27 +10,39 @@ import android.widget.TextView;
 public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChangeListener {
     public static final String TAG = "SpeakerView";
     public static final String Preferences_KEY_Speed = "setSpeedRate";
+    public static final String Preferences_KEY_Pitch = "setPitch";
 
     private final Activity mContext;
-    private SeekBar mSeekBar;
-    private TextView mTxt;
+    private SeekBar mSpeedSeekBar;
+    private SeekBar mPitchSeekBar;
+    private TextView mSpeedTxt;
+    private TextView mPitchTxt;
     WebSpeaker mWebSpeaker;
     float mSpeed;
+    float mPitch;
 
     public SpeakerView(Activity context) {
         super(context);
         mContext = context;
         this.mSpeed = mContext.getPreferences(Context.MODE_PRIVATE).getFloat(Preferences_KEY_Speed, 1.5f);
+        this.mPitch = mContext.getPreferences(Context.MODE_PRIVATE).getFloat(Preferences_KEY_Pitch, 1.0f);
         initView();
     }
 
     private void initView() {
         mContext.getLayoutInflater().inflate(R.layout.speaker_view, this);
-        mSeekBar = findViewById(R.id.seekBar);
-        mTxt = findViewById(R.id.speed_txt);
-        this.mSeekBar.setOnSeekBarChangeListener(this);
+        mSpeedSeekBar = findViewById(R.id.speed_seekbar);
+        mPitchSeekBar = findViewById(R.id.pitch_seekbar);
+        mSpeedTxt = findViewById(R.id.speed_txt);
+        mPitchTxt = findViewById(R.id.pitch_txt);
+        mSpeedSeekBar.setMax(20);
+        mPitchSeekBar.setMax(20);
+        this.mSpeedSeekBar.setOnSeekBarChangeListener(this);
+        this.mPitchSeekBar.setOnSeekBarChangeListener(this);
         int pos = float_2_int(this.mSpeed);
-        this.mSeekBar.setProgress(pos);
+        this.mSpeedSeekBar.setProgress(pos);
+        pos = float_2_int(this.mPitch);
+        this.mPitchSeekBar.setProgress(pos);
 
 //        mGoto = findViewById(R.id.goto_settings);
 //        mGoto.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +75,18 @@ public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChange
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         SharedPreferences.Editor paramSeekBar = mContext.getPreferences(Context.MODE_PRIVATE).edit();
-        paramSeekBar.putFloat(Preferences_KEY_Speed, this.mSpeed);
-        paramSeekBar.commit();
-        this.mWebSpeaker.SetSpeed(this.mSpeed);
+        switch (seekBar.getId()) {
+            case R.id.speed_seekbar:
+                paramSeekBar.putFloat(Preferences_KEY_Speed, this.mSpeed);
+                paramSeekBar.commit();
+                this.mWebSpeaker.SetSpeed(this.mSpeed);
+                break;
+            case R.id.pitch_seekbar:
+                paramSeekBar.putFloat(Preferences_KEY_Pitch, this.mPitch);
+                paramSeekBar.commit();
+                this.mWebSpeaker.SetPitch(this.mPitch);
+                break;
+        }
     }
 
     /**
@@ -81,14 +102,21 @@ public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChange
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress,
                                   boolean fromUser) {
-
-        this.mSpeed = int_2_float(progress);
-        mTxt.setText("当前语速：" + this.mSpeed + "x");
+        switch (seekBar.getId()) {
+            case R.id.speed_seekbar:
+                this.mSpeed = int_2_float(progress);
+                mSpeedTxt.setText("当前语速：" + this.mSpeed + "x");
+                break;
+            case R.id.pitch_seekbar:
+                this.mPitch = int_2_float(progress);
+                mPitchTxt.setText("当前音调：" + this.mPitch + "x");
+                break;
+        }
     }
 
     private int float_2_int(float f) {
         int i_min = 0;
-        int i_max = 100;
+        int i_max = 20;
         float f_min = 0.5f;
         float f_max = 2.5f;
         return (int) ((f - f_min) * (i_max - i_min) / (f_max - f_min));
@@ -96,7 +124,7 @@ public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChange
 
     private float int_2_float(int i) {
         int i_min = 0;
-        int i_max = 100;
+        int i_max = 20;
         float f_min = 0.5f;
         float f_max = 2.5f;
         return i * (f_max - f_min) / (i_max - i_min) + f_min;

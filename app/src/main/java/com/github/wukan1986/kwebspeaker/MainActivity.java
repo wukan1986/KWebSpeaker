@@ -28,12 +28,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     long exitTime = 0;
+    ProgressBar mProgressBar;
     WebView mWebView;
     String mAddress;
     WebSpeaker mWebSpeaker;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.mProgressBar = findViewById(R.id.pb_progress);
         this.mWebView = findViewById(R.id.webview);
         initWebView();
 
@@ -184,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void initWebView() {
-        //mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         WebSettings ws = mWebView.getSettings();
         // 网页内容的宽度是否可大于WebView控件的宽度
         ws.setLoadWithOverviewMode(false);
@@ -236,9 +238,11 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView paramAnonymousWebView, int paramAnonymousInt) {
                 setTitle("Loading...");
-                //WebSpeakerActivityPro.this.mActivity.setProgress(paramAnonymousInt * 100);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setProgress(paramAnonymousInt);
                 if (paramAnonymousInt == 100) {
-                    setTitle(R.string.app_name);
+                    setTitle(getTitle());
+                    mProgressBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -246,7 +250,8 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new HelloWebViewClient());
         this.mWebSpeaker = new WebSpeaker(this.mWebView);
         float speed = this.getPreferences(Context.MODE_PRIVATE).getFloat(SpeakerView.Preferences_KEY_Speed, 1.5f);
-        this.mWebSpeaker.InitTts(speed);
+        float pitch = this.getPreferences(Context.MODE_PRIVATE).getFloat(SpeakerView.Preferences_KEY_Pitch, 1.0f);
+        this.mWebSpeaker.InitTts(speed,pitch);
         this.mWebView.addJavascriptInterface(this.mWebSpeaker, this.mWebSpeaker.jsInterface);
     }
 

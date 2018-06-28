@@ -239,12 +239,13 @@ public class WebSpeaker implements TextToSpeech.OnInitListener {
         return i + 1;
     }
 
-    public void InitTts(float speed) {
+    public void InitTts(float speed, float pitch) {
         if (this.mTts == null) {
             this.mTts = new TextToSpeech(mWebView.getContext(), this);
             this.mTts.setOnUtteranceProgressListener(new TtsUtteranceListener());
 
             SetSpeed(speed);
+            SetPitch(pitch);
         }
     }
 
@@ -295,6 +296,10 @@ public class WebSpeaker implements TextToSpeech.OnInitListener {
 
     public void SetSpeed(float speed) {
         this.mTts.setSpeechRate(speed);
+    }
+
+    public void SetPitch(float pitch) {
+        this.mTts.setPitch(pitch);
     }
 
     private class TtsUtteranceListener extends UtteranceProgressListener {

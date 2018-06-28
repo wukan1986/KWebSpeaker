@@ -12,8 +12,21 @@
         android:text="语速" />
 
     <SeekBar
-        android:id="@+id/seekBar"
+        android:id="@+id/speed_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/pitch_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="音调"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:id="@+id/pitch_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 
 </LinearLayout>

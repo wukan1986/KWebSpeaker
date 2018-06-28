@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">侃哥的网页朗读神器</string>
+    <string name="app_name">侃侃朗读</string>
     <string name="url_or_txt">设置网址或文本</string>
     <string name="address_tips">网址浏览：将当前内容当成网址直接访问\n文本显示：将当前内容做为网页的正文进行显示（可解决部分网页无法直接朗读的问题）</string>
     <string name="as_url">网址浏览</string>
