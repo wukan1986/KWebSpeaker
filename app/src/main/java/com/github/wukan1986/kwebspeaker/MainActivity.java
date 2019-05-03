@@ -93,48 +93,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ShowAddressDialog(String txt) {
-        final View view = getLayoutInflater().inflate(R.layout.address_view, null);
+        AddressView view = new AddressView(this);
+        view.mWebView = mWebView;
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.url_or_txt)//设置对话框的标题
                 .setView(view)
-                .setPositiveButton(R.string.as_url, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText et = view.findViewById(R.id.address_edit);
-                        mAddress = et.getText().toString().trim();
-                        if (mAddress.indexOf("://") > 0 && mAddress.indexOf("://") < 20) {
-                            // 比较短，应当是出现了协议
-                        } else {
-                            mAddress = "http://" + mAddress;
-                        }
-                        mWebView.loadUrl(mAddress);
-                        dialog.dismiss();
-                    }
-                })
-                .setNeutralButton(R.string.as_txt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText et = view.findViewById(R.id.address_edit);
-                        mAddress = et.getText().toString().trim();
-                        // 使用段落来分段
-                        mAddress = mAddress.replace("\n", "</p><p>");
-                        mAddress = "<p>" + mAddress + "</p>";
-                        mWebView.loadData(mAddress, "text/html", "utf-8");
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
                 .create();
         dialog.show();
-        EditText et = dialog.findViewById(R.id.address_edit);
-        et.setText(txt);
-        et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        et.setImeOptions(EditorInfo.IME_ACTION_NONE);
+        view.Set(txt, dialog);
     }
 
     @Override
@@ -251,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         this.mWebSpeaker = new WebSpeaker(this.mWebView);
         float speed = this.getPreferences(Context.MODE_PRIVATE).getFloat(SpeakerView.Preferences_KEY_Speed, 1.5f);
         float pitch = this.getPreferences(Context.MODE_PRIVATE).getFloat(SpeakerView.Preferences_KEY_Pitch, 1.0f);
-        this.mWebSpeaker.InitTts(speed,pitch);
+        this.mWebSpeaker.InitTts(speed, pitch);
         this.mWebView.addJavascriptInterface(this.mWebSpeaker, this.mWebSpeaker.jsInterface);
     }
 

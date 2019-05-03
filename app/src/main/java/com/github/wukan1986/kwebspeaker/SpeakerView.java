@@ -3,11 +3,13 @@ package com.github.wukan1986.kwebspeaker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChangeListener {
+public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     public static final String TAG = "SpeakerView";
     public static final String Preferences_KEY_Speed = "setSpeedRate";
     public static final String Preferences_KEY_Pitch = "setPitch";
@@ -20,6 +22,7 @@ public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChange
     WebSpeaker mWebSpeaker;
     float mSpeed;
     float mPitch;
+    private Button mTestBtn;
 
     public SpeakerView(Activity context) {
         super(context);
@@ -43,30 +46,14 @@ public class SpeakerView extends LinearLayout implements SeekBar.OnSeekBarChange
         this.mSpeedSeekBar.setProgress(pos);
         pos = float_2_int(this.mPitch);
         this.mPitchSeekBar.setProgress(pos);
+        mTestBtn = findViewById(R.id.button_test);
+        this.mTestBtn.setOnClickListener(this);
 
-//        mGoto = findViewById(R.id.goto_settings);
-//        mGoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    //Open Android Text-To-Speech Settings
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                        Intent intent = new Intent();
-//                        intent.setAction("com.android.settings.TTS_SETTINGS");
-//                        Intent intent1 = intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        mContext.startActivity(intent);
-//                    } else {
-//                        Intent intent = new Intent();
-//                        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//                        intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.TextToSpeechSettings"));
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        mContext.startActivity(intent);
-//                    }
-//                } catch (Exception ex) {
-//                    Toast.makeText(mContext, R.string.goto_settings_error, Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        this.mWebSpeaker.Speak(1,"朗读测试，欢迎使用侃侃朗读，可选段的网页朗读神器");
     }
 
     /**
